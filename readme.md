@@ -55,3 +55,33 @@ nodemon
 - Search for medications you require using the search functionality.
 - Send requests to donors for medications that match your needs.
 - Await approval from donors and coordinate the medication pickup/delivery.
+
+## **ScreanShots**
+
+- Home Page
+  ![first image](/public/ss/1HomePage.png)
+  ![first image](/public/ss/2HomePage.png)
+
+- Signup Page
+  ![first image](/public/ss/3Signup.png)
+
+- Signin Page
+  ![first image](/public/ss/4Signin.png)
+
+- Profile Page
+  ![first image](/public/ss/5Profile.png)
+
+- Change Password Page
+  ![first image](/public/ss/6ChangePassword.png)
+
+- Donor Dashboard Page
+  ![first image](/public/ss/7DonorDash.png)
+
+- Avail Medicine Page
+  ![first image](/public/ss/8AvailMedicine.png)
+
+- Needy Dashboard Page
+  ![first image](/public/ss/9NeedyDash.png)
+
+- Medicine Finder Page(MVP)
+  ![first image](/public/ss/10MedicineFinder.png)
