@@ -55,4 +55,3 @@ nodemon
 - Search for medications you require using the search functionality.
 - Send requests to donors for medications that match your needs.
 - Await approval from donors and coordinate the medication pickup/delivery.
-  ![first image](/public/pics/22849.jpg)
