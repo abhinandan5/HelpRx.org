@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Node Project</title>
+    <link rel="stylesheet" href="index.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="script/angular.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      #wait {
+        display: none;
+      }
+      body {
+        width: 100%;
+      }
+    </style>
+    <script>
+      //===============|| AJAX for SignUp ||=====================
+      //====( || Ajax to Save data || )====
+
+      $(document).ready(function () {
+        //-------------| Checking Email Existence |-------------
+        $("#supEmail").blur(function () {
+          var emailKu = $(this).val();
+          var obj = {
+            type: "get",
+            url: "/chk-signup-email",
+            data: {
+              kuchemail: emailKu,
+            },
+          };
+
+          $.ajax(obj)
+            .done(function (respKuch) {
+              //alert(respKuch);
+              $("#errSupEmail").html(respKuch);
+              if (respKuch == "Already Taken...")
+                $("#errSupEmail").html(respKuch).css("color", "red");
+              else $("#errSupEmail").html(respKuch).css("color", "green");
+            })
+            .fail(function (errKuch) {
+              $("errSupEmail").html(errKuch);
+            });
+        });
+
+        //---------------| SignUp Button |-------------------
+
+        $("#btnSup").click(function () {
+          var emailKu = $("#supEmail").val();
+          var pwdKu = $("#supPwd").val();
+          var typeKu = $("#suplistType").val();
+          var obj = {
+            type: "get",
+            url: "/signup",
+            data: {
+              kuchEmail: emailKu,
+              kuchPwd: pwdKu,
+              kuchType: typeKu,
+            },
+          };
+          $.ajax(obj)
+            .done(function (response) {
+              // $("#errSup").html(response);
+              alert(response);
+            })
+            .fail(function (errKuch) {
+              $("#errSup").html(errKuch);
+            });
+        });
+
+        //--------| checking Password is correct or not |---------
+        $("#supPwd").blur(function () {
+          var r =
+            /(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+          var pwd = $("#supPwd").val();
+        });
+
+        //-------| Enabling the Eye(PassWord Viewer) |--------
+        $(".fa-solid").mouseup(function () {
+          $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+          $("#supPwd").prop("type", "password");
+        });
+        //-------
+        $(".fa-solid").mousedown(function () {
+          $(this).addClass("fa-eye").removeClass("fa-eye-slash");
+          $("#supPwd").prop("type", "text");
+        });
+
+        //----------------------------------------------------
+
+        //--------------| SignIn button |---------------------
+        $("#btnSin").click(function () {
+          var emailKu = $("#sinEmail").val();
+          var pwdKu = $("#sinPwd").val();
+          var objL = {
+            type: "get",
+            url: "/signin",
+            data: {
+              kuchSinEmail: emailKu,
+              kuchSinPwd: pwdKu,
+            },
+          };
+
+          $.ajax(objL)
+            .done(function (resp) {
+              localStorage.setItem("activeKuch", $("#sinEmail").val());
+              if (resp == "1") location.href = "dash-donor.html";
+              else if (resp == "2") location.href = "dash-needy.html";
+              else if (resp == "3") location.href = "dash-admin.html";
+              else alert(resp);
+            })
+            .fail(function (err) {
+              $("#btnSin").html(err);
+            });
+        });
+
+        //-------| Enabling the Eye(PassWord Viewer) |--------
+        $(".fa-solid").mouseup(function () {
+          $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+          $("#sinPwd").prop("type", "password");
+        });
+        //-------
+        $(".fa-solid").mousedown(function () {
+          $(this).addClass("fa-eye").removeClass("fa-eye-slash");
+          $("#sinPwd").prop("type", "text");
+        });
+      });
+
+      //----------------------------------------------------
+    </script>
+  </head>
+  <body>
+    <!-- --------------------| NavBar |---------------------->
+    <nav class="navbar fixed-top bg-body-tertiary">
+      <div class="container-fluid" style="background-color: skyblue">
+        <div>
+          <img
+            src="pics/logo1.jpeg"
+            alt="Logo"
+            width="50"
+            height="44"
+            class="d-inline-block align-text-top"
+          />
+          <div class="d-inline-block align-text-top" id="header">
+            <h2><b>HelpRx.org</b></h2>
+          </div>
+        </div>
+        <div>
+          <button
+            type="button"
+            class="btn bttn"
+            data-bs-toggle="modal"
+            data-bs-target="#sUpModal"
+            style="font-weight: bold; color: blue"
+          >
+            Signup
+          </button>
+          <button
+            type="button"
+            class="btn bttn"
+            data-bs-toggle="modal"
+            data-bs-target="#sInModal"
+            style="font-weight: bold; color: blue"
+          >
+            Login
+          </button>
+        </div>
+      </div>
+    </nav>
+    <br /><br />
+    <!------------------| SignUp Modal |-------------------->
+    <div
+      class="modal fade"
+      id="sUpModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <!-- modal-dialog-centered -->
+        <div
+          class="modal-content"
+          style="background-color: rgb(135, 206, 235, 0.9)"
+        >
+          <form method="get" enctype="multipart/form-data">
+            <input type="hidden" id="hdn" name="hdn" />
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Sign-Up</h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="col-md-12">
+              <center>
+                <img id="wait" src="pics/icons8-loading-infinity.gif" alt="" />
+              </center>
+            </div>
+            <div class="modal-body">
+              <div>
+                <img
+                  src="pics/signup.jpg"
+                  class="rounded mx-auto d-block"
+                  alt="..."
+                />
+              </div>
+
+              <div class="form mb-3">
+                <label for="floatingInput"><b>Email address</b></label>
+                <input
+                  type="email"
+                  class="form-control mt-2"
+                  name="supEmail"
+                  id="supEmail"
+                  placeholder="Email address"
+                  pattern="^[a-zA-Z0-9]+@gmail\.com$"
+                  title="gmail only"
+                  required
+                />
+                <span id="errSupEmail"></span>
+              </div>
+
+              <!-- | password Input | -->
+              <div class="col-md-12">
+                <div>
+                  <label for="floatingInput"><b>Password</b></label>
+                </div>
+                <div style="display: flex; flex-direction: row">
+                  <div class="col-md-11">
+                    <input
+                      type="password"
+                      class="form-control mt-2"
+                      name="supPwd"
+                      id="supPwd"
+                      placeholder="Password Here..."
+                      required
+                    />
+                  </div>
+                  <!--  | Eye | -->
+                  <center>
+                    <div class="col-md-1 mt-2">
+                      <i class="fa-solid fa-eye"></i>
+                    </div>
+                  </center>
+                </div>
+              </div>
+              <!-- ------------ -->
+              <div class="col-md-12">
+                <b>Type</b>
+                <select
+                  class="form-select mt-2"
+                  aria-label="Default select example"
+                  name="suplistType"
+                  id="suplistType"
+                >
+                  <option selected>Choose</option>
+                  <option value="1">Donar</option>
+                  <option value="2">Reciever</option>
+                  <option value="3">Admin</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-primary"
+                id="btnSup"
+                name="btnSup"
+              >
+                Sign-Up
+              </button>
+              <div>
+                <center><span id="errSup"></span></center>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!---------------------| Signin Modal |----------------------->
+    <div
+      class="modal fade"
+      id="sInModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div
+          class="modal-content"
+          style="background-color: rgb(135, 206, 235, 0.9)"
+        >
+          <form method="get" enctype="multipart/form-data">
+            <input type="hidden" id="hdn" name="hdn" />
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div>
+                <img
+                  src="pics/login.jpg"
+                  class="rounded mx-auto d-block"
+                  alt="..."
+                />
+              </div>
+
+              <div class="form mb-3">
+                <label for="floatingInput"><b>Email address</b></label>
+                <input
+                  type="text"
+                  class="form-control mt-2"
+                  name="sinEmail"
+                  id="sinEmail"
+                  placeholder="name@example.com"
+                  autofocus
+                />
+                <span id="errSinEmail"></span>
+              </div>
+
+              <!-- | password Input | -->
+              <div class="col-md-12 form mb-3">
+                <div>
+                  <label for="floatingInput"><b>Password</b></label>
+                </div>
+                <div style="display: flex; flex-direction: row">
+                  <div class="col-md-11">
+                    <input
+                      type="password"
+                      class="form-control mt-2"
+                      name="sinPwd"
+                      id="sinPwd"
+                      placeholder="Password Here..."
+                      autofocus
+                    />
+                  </div>
+                  <!--  | Eye | -->
+                  <center>
+                    <div class="col-md-1 mt-2">
+                      <i class="fa-solid fa-eye"></i>
+                    </div>
+                  </center>
+                  <!-- ------------ -->
+                  <span id="errSinPwd"></span>
+                </div>
+              </div>
+            </div>
+            <!-- ------------------------------- -->
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-primary"
+                id="btnSin"
+                name="btnSin"
+              >
+                Login
+              </button>
+              <div>
+                <center><span id="errSin"></span></center>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <br /><br />
+    <!-- --------------------------| Carousal |----------------------- -->
+    <div class="carousal">
+      <div
+        id="carouselExampleAutoplaying"
+        class="carousel slide"
+        data-bs-ride="carousel"
+      >
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img
+              src="pics/carousalPhoto1.jpg"
+              class="d-block w-100"
+              style="background-size: contain; background-repeat: no-repeat"
+              alt="..."
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              src="pics/carousalPhoto3.jpg"
+              class="d-block w-100"
+              alt="..."
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              src="pics/carousalPhoto4.jpeg"
+              class="d-block w-100"
+              alt="..."
+            />
+          </div>
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#carouselExampleAutoplaying"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#carouselExampleAutoplaying"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+    <br />
+    <!-- ----------------------| Our Services |--------------------------- -->
+    <div class="col-md-12 mt-2">
+      <div style="background-color: white">
+        <center>
+          <h2><b style="color: darkblue">Our Services</b></h2>
+        </center>
+      </div>
+    </div>
+    <br />
+    <!-------------| Container |--------------------------->
+    <div class="col-md-12">
+      <div
+        class="container col-md-12 ms-2"
+        style="display: flex; flex-direction: row; gap: 20px"
+      >
+        <!--------------------------| Donation |--------------------------------->
+        <div
+          class="card col-md-3 mt-2 ms-5"
+          style="width: 18rem; box-shadow: 5px 5px 10px grey"
+        >
+          <div class="mt-2">
+            <img
+              src="pics/donation.jpeg"
+              class="rounded mx-auto d-block"
+              style="background-size: contain"
+              alt="..."
+            />
+          </div>
+          <div style="background-color: skyblue">
+            <div class="card-body">
+              <h5 class="card-title" style="color: blue">Donation</h5>
+              <p class="card-text">
+                Donate to support various causes and make a difference in
+                people's lives.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!----------------------| Needy |----------------------------->
+        <div
+          class="card col-md-3 mt-2 ms-5"
+          style="width: 18rem; box-shadow: 5px 5px 10px grey"
+        >
+          <div class="mt-2">
+            <img
+              src="pics/needy.jpeg"
+              class="rounded mx-auto d-block"
+              style="background-size: contain"
+              alt="..."
+            />
+          </div>
+          <div style="background-color: skyblue">
+            <div class="card-body">
+              <h5 class="card-title" style="color: blue">Needy</h5>
+              <p class="card-text">
+                Explore the stories of those in need and find out how you can
+                help them.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!---------------------| Support 24X7 |----------------------------->
+        <div
+          class="card col-md-3 mt-2 ms-5"
+          style="width: 18rem; box-shadow: 5px 5px 10px grey"
+        >
+          <div class="mt-2">
+            <img
+              src="pics/24x7.jpeg"
+              class="rounded mx-auto d-block"
+              style="background-size: contain"
+              alt="..."
+            />
+          </div>
+          <div style="background-color: skyblue">
+            <div class="card-body">
+              <h5 class="card-title" style="color: blue">Support 24X7</h5>
+              <p class="card-text">
+                Get assistance for any queries,Our dedicated support team is
+                always available to assist you.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-------------------------| Terms and Conditions |--------------------------------->
+        <div
+          class="card col-md-3 mt-2 ms-5"
+          style=" box-shadow: 5px 5px 10px grey"
+        >
+          <div class="mt-2">
+            <img
+              src="pics/t&c.jpeg"
+              class="rounded mx-auto d-block"
+              style="background-size: contain"
+              alt="..."
+            />
+          </div>
+          <div style="background-color: skyblue">
+            <div class="card-body">
+              <h5 class="card-title" style="color: blue">
+                <b>Terms and Conditions</b>
+              </h5>
+              <p class="card-text">
+                Read through the terms and conditions to understand your rights
+                and obligations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!----------------------| Container Ends |--------------------------->
+    <br /><br />
+    <!-- ----------------------| Developed By |--------------------------- -->
+    <div class="col-md-12 mt-2">
+      <div style="background-color: white">
+        <center>
+          <h2><b style="color: blue">Developed By</b></h2>
+        </center>
+      </div>
+    </div>
+    <br />
+    <!-- ---------------------------- -->
+    <div class="col-md-12">
+      <div
+        class="col-md-12"
+        style="display: flex; flex-direction: row; gap: 20px"
+      >
+        <!--  -->
+        <div class="col-md-6 ms-5">
+          <div class="card mb-3" style="max-width: 540px">
+            <div class="row g-0">
+              <div class="col-md-4 mt-2">
+                <img
+                  src="pics/abhinandan.jpg"
+                  class="img-fluid rounded-start"
+                  alt="..."
+                />
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title"><h3>Developed By</h3></h5>
+                  <p class="card-text">
+                    <b>Abhinandan</b> <br />
+                    abhijin001@gmail.com <br />
+                    <a href="http://www.nitrr.ac.in/">NIT Raipur</a> <br />
+                    Master of Computer Application
+                  </p>
+                  <p class="card-text">
+                    <small class="text-body-secondary"
+                      >Last updated 3 mins ago</small
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--  -->
+        <div class="col-md-6">
+          <div class="card mb-3" style="max-width: 540px">
+            <div class="row g-0">
+              <div class="col-md-4 mt-1">
+                <img
+                  src="pics/rajeshSir.jpg"
+                  class="img-fluid rounded-start"
+                  alt="..."
+                />
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title"><h3>Under the Guidance of</h3></h5>
+                  <p class="card-text">
+                    <b>Rajesh Bansal</b> <br />
+                    Banglore Computer Education <br />
+                    <a href="http://realjavaonline.com/index.php"
+                      ><b>RealJavaOnline.com</b></a
+                    >
+                  </p>
+                  <p class="card-text">
+                    <small class="text-body-secondary"
+                      >Last updated 3 mins ago</small
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--  -->
+      </div>
+    </div>
+    <br /><br />
+    <!-- --------------------------- -->
+    <!-- ----------------------| Reach Us |--------------------------- -->
+    <div>
+      <div class="col-md-12 mt-2">
+        <div style="background-color: white">
+          <center>
+            <h2><b style="color: blue">Reach Us</b></h2>
+          </center>
+        </div>
+      </div>
+      <br />
+      <center>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3447.880571595972!2d74.94975317509267!3d30.211955910615455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391732a4f07278a9%3A0x4a0d6293513f98ce!2sBanglore%20Computer%20Education!5e0!3m2!1sen!2sin!4v1690741390843!5m2!1sen!2sin"
+          width="600"
+          height="450"
+          style="border: 0"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </center>
+    </div>
+    <br /><br />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

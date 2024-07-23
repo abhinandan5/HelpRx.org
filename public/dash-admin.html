@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard Admin</title>
+    <link rel="stylesheet" href="index.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="script/angular.min.js"></script>
+    <script>
+      //-------------------| Profile Button |----------------------
+      function openFAU() {
+        window.location.href = "panel-users.html";
+      }
+      function openSD() {
+        window.location.href = "panel-donors.html";
+      }
+      function openSN() {
+        window.location.href = "panel-needys.html";
+      }
+
+      //============|| AJAX ||=================
+      $(document).ready(function () {
+        if (localStorage.getItem("activeKuch") == undefined) {
+          location.href = "index.html";
+          return;
+        }
+        //----------| Logout Button |------------
+        $("#logout").click(function () {
+          localStorage.removeItem("activeKuch");
+          location.href = "index.html";
+        });
+        //---------------------------------------
+      });
+    </script>
+  </head>
+  <body>
+    <!-----------------| Navbar |---------------------->
+    <nav class="navbar fixed-top bg-body-tertiary">
+      <div class="container-fluid" style="background-color: skyblue">
+        <a class="navbar-brand" href="#">
+          <div>
+            <img
+              src="pics/logo1.jpeg"
+              alt="Logo"
+              width="50"
+              height="44"
+              class="d-inline-block align-text-top"
+            />
+            <div class="d-inline-block align-text-top" id="header">
+              <h2><b>HelpRx.org</b></h2>
+            </div>
+          </div>
+        </a>
+        <form class="d-flex" role="search">
+          <button class="btn btn-danger" type="button" id="logout">
+            Logout
+          </button>
+        </form>
+      </div>
+    </nav>
+    <br /><br /><br /><br />
+    <!---------------------------------------------------->
+    <div class="col-md-12 ms-2" style="border-color: cornflowerblue">
+      <div class="row">
+        <!--------------------------| All Users |--------------------------------->
+        <div
+          class="card col-md-4 mt-5 ms-5"
+          style="width: 18rem; float: left; box-shadow: 5px 5px 10px grey"
+        >
+          <div class="mt-2">
+            <img
+              src="pics/showAllUsers.jpeg"
+              class="rounded mx-auto d-block"
+              style="background-size: contain"
+              alt="..."
+            />
+          </div>
+          <div class="card-body">
+            <h5 class="card-title" style="color: blue">Fetch All Users</h5>
+            <p class="card-text">
+              Explore our diverse community of users from around the world.
+            </p>
+            <center>
+              <button
+                type="button"
+                class="btn btn-primary"
+                id="btnAllUsers"
+                onclick="openFAU()"
+              >
+                Fetch All Users
+              </button>
+            </center>
+          </div>
+        </div>
+        <!----------------------| Fetch All Donors |----------------------------->
+        <div
+          class="card col-md-4 mt-5 ms-5"
+          style="width: 18rem; float: left; box-shadow: 5px 5px 10px grey"
+        >
+          <div class="mt-2">
+            <img
+              src="pics/showDonors.jpeg"
+              class="rounded mx-auto d-block"
+              style="background-size: contain"
+              alt="..."
+            />
+          </div>
+          <div class="card-body mt-4">
+            <h5 class="card-title" style="color: blue">Show All Donors</h5>
+            <p class="card-text">
+              Discover the generous individuals who contribute to our cause.
+            </p>
+            <center>
+              <button
+                type="button"
+                class="btn btn-primary mt-1"
+                id="btnShowDonors"
+                onclick="openSD()"
+              >
+                Show Donors
+              </button>
+            </center>
+          </div>
+        </div>
+        <!---------------------| Fetch All Needy's |----------------------------->
+        <div
+          class="card col-md-4 mt-5 ms-5"
+          style="width: 18rem; float: left; box-shadow: 5px 5px 10px grey"
+        >
+          <div class="mt-2">
+            <img
+              src="pics/showNeedys.jpeg"
+              class="rounded mx-auto d-block"
+              style="background-size: contain"
+              alt="..."
+            />
+          </div>
+          <div class="card-body">
+            <h5 class="card-title" style="color: blue">Show All Needy's</h5>
+            <p class="card-text">
+              Explore the individuals in need who benefit from our support.
+            </p>
+            <center>
+              <button
+                type="button"
+                class="btn btn-primary"
+                id="btnShowNeedy"
+                onclick="openSN()"
+              >
+                Show Needy's
+              </button>
+            </center>
+          </div>
+        </div>
+        <!-------------------->
+      </div>
+    </div>
+    <!---------------------------------------------------------------------->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
