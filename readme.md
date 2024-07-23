@@ -56,7 +56,7 @@ nodemon
 - Send requests to donors for medications that match your needs.
 - Await approval from donors and coordinate the medication pickup/delivery.
 
-## **ScreanShots**
+## **ScreenShots**
 
 - Home Page
   ![first image](/public/ss/1HomePage.png)
